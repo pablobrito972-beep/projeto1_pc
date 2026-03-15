@@ -36,3 +36,66 @@ taxa_poupanca = 0.005
 montante_poupaca = (capital * math.pow((1+taxa taxa_poupanca),meses)+(aporte * meses))
 
 #FII - SIMULAÇÕES
+
+base_fii = (capital * math.pow((1 + taxa_fii), meses) + (aporte * meses))
+fii1 = base_fii * (1 + random.uniform(-0.03,0.03))
+fii2 = base_fii * (1 + random.uniform(-0.03,0.03))
+fii3 = base_fii * (1 + random.uniform(-0.03,0.03))
+fii4 = base_fii * (1 + random.uniform(-0.03,0.03))
+fii5 = base_fii * (1 + random.uniform(-0.03,0.03))
+
+# ESTATÍSTICAS
+fii_media = statistics.mean([fii1,fii2,fii3,fii4,fii5])
+fii_mediana = statistics.median([fii1,fii2,fii3,fii4,fii5])
+fii_desvio = statistics.stdev([fii1,fii2,fii3,fii4,fii5])
+
+# META
+meta_atingida = fii_media >= meta
+
+# DATAS
+data_simulacao = datetime.datetime.now()
+data_resgate = data_simulacao + datetime.timedelta(days=meses*30)
+
+# FORMATAÇÃO MONETÁRIA
+total_fmt = locale.currency(total_investido, grouping=True)
+cdb_fmt = locale.currency(montante_cdb_liquido, grouping=True)
+lci_fmt = locale.currency(montante_lci, grouping=True)
+poup_fmt = locale.currency(montante_poupanca, grouping=True)
+fii_media_fmt = locale.currency(fii_media, grouping=True)
+fii_mediana_fmt = locale.currency(fii_mediana, grouping=True)
+fii_desvio_fmt = locale.currency(fii_desvio, grouping=True)
+
+# GRÁFICOS ASCII
+graf_cdb = "█" * int(montante_cdb_liquido / 1000)
+graf_lci = "█" * int(montante_lci / 1000)
+graf_poup = "█" * int(montante_poupanca / 1000)
+graf_fii = "█" * int(fii_media / 1000)
+
+# RELATÓRIO FINAL
+print("\n==============================")
+print("RELATÓRIO DE SIMULAÇÃO")
+print("==============================")
+
+print("Data da simulação:", data_simulacao.strftime("%d/%m/%Y"))
+print("Data estimada de resgate:", data_resgate.strftime("%d/%m/%Y"))
+
+print("\nTotal investido:", total_fmt)
+
+print("\n--- RESULTADOS ---")
+print("CDB:", cdb_fmt)
+print("LCI/LCA:", lci_fmt)
+print("Poupança:", poup_fmt)
+print("FII (média):", fii_media_fmt)
+
+print("\n--- ESTATÍSTICAS DO FII ---")
+print("Média:", fii_media_fmt)
+print("Mediana:", fii_mediana_fmt)
+print("Desvio padrão:", fii_desvio_fmt)
+
+print("\nMeta atingida:", meta_atingida)
+
+print("\n--- GRÁFICO DE PROJEÇÃO ---")
+print("CDB     :", graf_cdb)
+print("LCI/LCA :", graf_lci)
+print("Poupança:", graf_poup)
+print("FII     :", graf_fii)
